@@ -1,20 +1,20 @@
-const express = require('express');
+import express from 'express';
+import bcrypt from 'bcryptjs';
+import Korisnik from '../models/Korisnik.js';
+
 const router = express.Router();
-const bcrypt = require('bcryptjs');
 
 router.post('/registracija', async (req, res) => {
     try {
         const { ime, prezime, email, lozinka, username, newsletter } = req.body;
-
-        let user = await user.findOne({ email });
+        let user = await Korisnik.findOne({ email });
         if (user) {
             return res.status(400).json({ message: 'Korisnik s tim e-mailom već postoji.' });
         }
 
         const salt = await bcrypt.genSalt(10);
         const hashLozinka = await bcrypt.hash(lozinka, salt);
-
-        user = new user({
+        const noviKorisnik = new Korisnik({
             ime,
             prezime,
             email,
@@ -24,7 +24,7 @@ router.post('/registracija', async (req, res) => {
             uloga: 'User'
         });
 
-        await korisnik.save();
+        await noviKorisnik.save();
         res.status(201).json({ message: 'Registracija uspješna!' });
 
     } catch (err) {
@@ -33,4 +33,4 @@ router.post('/registracija', async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;

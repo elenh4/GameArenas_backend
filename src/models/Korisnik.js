@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const KorisnikSchema = new mongoose.Schema({
     ime: {
@@ -28,7 +28,7 @@ const KorisnikSchema = new mongoose.Schema({
     },
     uloga: {
         type: String,
-        enum: ['korisnik', 'volonter', 'admin'],
+        enum: ['User', 'korisnik', 'volonter', 'admin'],
         default: 'korisnik'
     },
     odobren: {
@@ -39,4 +39,5 @@ const KorisnikSchema = new mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model('Korisnik', KorisnikSchema);
+const Korisnik = mongoose.model('Korisnik', KorisnikSchema);
+export default Korisnik;
