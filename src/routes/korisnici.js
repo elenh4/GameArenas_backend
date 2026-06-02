@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 
-router.post('/Registracija_korisnika', async (req, res) => {
+router.post('/registracija', async (req, res) => {
     try {
         const { ime, prezime, email, lozinka, username, newsletter } = req.body;
 
