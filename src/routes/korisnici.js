@@ -33,4 +33,33 @@ router.post('/registracija', async (req, res) => {
     }
 });
 
+router.post('/prijava', async (req, res) => {
+    try {
+        const { email, lozinka } = req.body;
+        const korisnik = await Korisnik.findOne({ email });
+        if (!korisnik) {
+            return res.status(400).json({ message: 'Korisnik s tim e-mailom ne postoji.' });
+        }
+
+        const isMatch = await bcrypt.compare(lozinka, korisnik.lozinka);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Netočna lozinka, pokušajte ponovno.' });
+        }
+
+        res.status(200).json({
+            message: 'Prijava uspješna!',
+            user: {
+                id: korisnik._id,
+                ime: korisnik.ime,
+                prezime: korisnik.prezime,
+                email: korisnik.email,
+                uloga: korisnik.uloga
+            }
+        });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Error pri prijavi korisnika.');
+    }
+});
+
 export default router;
