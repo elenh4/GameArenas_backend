@@ -1,11 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
+
 import connectDB from './src/config/db.js';
 import korisniciRoute from './src/routes/korisnici.js';
 
-dotenv.config();
-
+dotenv.config()
 const app = express();
 
 connectDB();

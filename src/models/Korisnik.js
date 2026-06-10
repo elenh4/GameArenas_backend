@@ -28,7 +28,7 @@ const KorisnikSchema = new mongoose.Schema({
     },
     uloga: {
         type: String,
-        enum: ['User', 'korisnik', 'volonter', 'admin'],
+        enum: ['User', 'korisnik', 'volonter', ],
         default: 'korisnik'
     },
     odobren: {
