@@ -20,6 +20,7 @@ const KorisnikSchema = new mongoose.Schema({
     },
     username: {
         type: String,
+        required: false,
         default: null
     },
     newsletter: {
@@ -28,7 +29,7 @@ const KorisnikSchema = new mongoose.Schema({
     },
     uloga: {
         type: String,
-        enum: ['User', 'korisnik', 'volonter', ],
+        enum: ['korisnik', 'volonter', 'admin'],
         default: 'korisnik'
     },
     odobren: {
