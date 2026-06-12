@@ -35,6 +35,10 @@ const KorisnikSchema = new mongoose.Schema({
     odobren: {
         type: Boolean,
         default: false
+    },
+    bodovi: {
+        type: Number,
+        default: 0
     }
 }, {
     timestamps: true

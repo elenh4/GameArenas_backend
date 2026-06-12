@@ -5,6 +5,7 @@ import cors from 'cors';
 import connectDB from './src/config/db.js';
 import korisniciRoute from './src/routes/korisnici.js';
 import turniriRoute from './src/routes/turnir.js'
+import scoreboardRoute from './src/routes/Scoreboard.js';
 
 dotenv.config()
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.json());
 
 app.use('/api/korisnici', korisniciRoute);
 app.use('/api/turniri', turniriRoute)
+app.use('/api/scoreboard', scoreboardRoute);
 
 const PORT = process.env.PORT || 3000;
 
