@@ -1,6 +1,7 @@
 import express from 'express'
 import Turnir from '../models/turnir.js'
 
+
 const router = express.Router()
 
 router.get('/', async (req, res) => {
@@ -21,6 +22,57 @@ router.post('/', async (req, res) => {
     } catch (err) {
         console.error(err.message)
         res.status(500).send('Greška pri dodavanju turnira.')
+    }
+})
+
+router.post('/:id/prijava', async (req, res) => {
+    try {
+        const turnir = await Turnir.findById(req.params.id)
+        if (!turnir) return res.status(404).json({ message: 'Turnir ne postoji.' })
+
+        const userId = req.body.userId
+
+        if (turnir.prijavljeni.includes(userId)) {
+            return res.status(400).json({ message: 'Već ste prijavljeni na ovaj turnir.' })
+        }
+
+        if (turnir.prijavljeni.length >= turnir.maxIgraca) {
+            return res.status(400).json({ message: 'Turnir je popunjen.' })
+        }
+
+        turnir.prijavljeni.push(userId)
+        await turnir.save()
+
+        res.status(200).json({ message: 'Uspješno ste se prijavili na turnir!' })
+    } catch (err) {
+        console.error(err.message)
+        res.status(500).send('Greška pri prijavi na turnir.')
+    }
+})
+
+
+router.get('/zavrseni', async (req, res) => {
+    try {
+        const sviTurniri = await Turnir.find().populate('prijavljeni', 'username')
+        const zavrseni = sviTurniri.filter(t => {
+            const vrijemeTurnira = new Date(`${t.datum}T${t.vrijeme}`)
+            return vrijemeTurnira < new Date()
+        })
+        res.status(200).json(zavrseni)
+    } catch (err) {
+        res.status(500).send('Greška.')
+    }
+})
+router.post('/:id/rezultati', async (req, res) => {
+    try {
+        const { rezultati } = req.body
+        const turnir = await Turnir.findById(req.params.id)
+        turnir.rezultati = rezultati
+        turnir.zavrsen = true
+        await turnir.save()
+        res.status(200).json({ message: 'Rezultati upisani!' })
+    } catch (err) {
+        res.status(500).send('Greška.')
     }
 })
 

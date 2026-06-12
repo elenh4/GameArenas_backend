@@ -29,7 +29,20 @@ const TurnirSchema = new mongoose.Schema({
     url: {
         type: String,
         default: null
-    }
+    },
+    prijavljeni:[{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Korisnik'
+    }],
+    zavrsen: {
+    type: Boolean,
+    default: false
+    },
+    rezultati: [{
+    korisnikId: { type: mongoose.Schema.Types.ObjectId, ref: 'Korisnik' },
+    mjesto: Number,
+    bodovi: Number
+    }]
 }, {
     timestamps: true
 })
